@@ -6,6 +6,8 @@ const config = require('../config/keys');
 
 const User = mongoose.model('users');
 
+let baseURL = process.env.NODE_ENV === 'production' ? 'https://infinite-river-57974.herokuapp.com' : 'http://localhost:5000';
+
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -21,7 +23,7 @@ passport.use(
   new GoogleStrategy({
     clientID: config.googleClientID,
     clientSecret: config.googleClientSecret,
-    callbackURL: '/auth/google/callback'
+    callbackURL: `${baseURL}/auth/google/callback`
   }, (accessToken, refreshToken, profile, done) => {
     User.findOne({ googleId: profile.id })
       .then((existingUser) => {
