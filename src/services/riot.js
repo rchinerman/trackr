@@ -44,15 +44,19 @@ const checkFollowing = (userAccount, summoner) =>{
 }
 
 exports.followSummoner = async (user, region, summonerName) => {
-  const userAccount = await User.findById(user.id); 
-  const summoner = await this.findSummoner(region, summonerName);
-  if(summoner.id === false) return false;
-  if(checkFollowing(userAccount, summoner)){
-    return "already following";
+  try {
+    const userAccount = await User.findById(user.id);
+    const summoner = await this.findSummoner(region, summonerName);
+    if(!summoner) return;
+    if(checkFollowing(userAccount, summoner)){
+      return;
+    }
+    await userAccount.following.push({region: region, id: summoner.id});
+    userAccount.save();
+  } catch (err){
+    console.log(err);
+    return;
   }
-  await userAccount.following.push({region: region, id: summoner.id});
-  userAccount.save();
-  return "saved";  
 }
 
 exports.processList = async (user) => {
@@ -61,7 +65,7 @@ exports.processList = async (user) => {
   const currentDate = new Date();
   let followingRanks = await Promise.all(followingList.map(async (summoner) => {
     const storedSummoner = await Summoner.findOne({ summonerId: summoner.id });    
-    const lastUpdate = new Date(storedSummoner.lastUpdate)
+    const lastUpdate = new Date(storedSummoner.lastUpdate);
     if(calcTimeDifference(lastUpdate, currentDate) >= 1){
       await findRank(summoner.region, summoner.id);      
       const updatedSummoner = await Summoner.findOne({ summonerId: summoner.id });

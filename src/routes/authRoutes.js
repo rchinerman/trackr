@@ -29,10 +29,10 @@ module.exports = app => {
   app.get('/api/follow/:region/:summoner', async (req, res) => {
     const completion = await riotRequest.followSummoner(req.user, req.params.region, req.params.summoner);
     if(completion){
-      res.send(completion);
+      res.send();
       return;
     }
-    res.send("Summoner not found.");
+    res.send();
   });
 
   app.get('/api/profile', async (req, res) => {
