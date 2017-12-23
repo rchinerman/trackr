@@ -3,6 +3,10 @@ import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Alert } from '
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
+const font = {
+  fontFamily: 'Open Sans, sans-serif'
+};
+
 function FieldGroup({ id, label, help, ...props }) {
   return (
     <FormGroup controlId={id}>
@@ -30,15 +34,21 @@ class Follow extends Component {
     await this.setState({ summoner: e.target.value });   
   }
 
-  submitButton = () => {
+  submitButton = async () => {
     this.props.submitFollow(this.state.region, this.state.summoner);
+    await this.setState ({ summoner: '' });    
   }
 
-  renderError = () => {
+  renderAlert = () => {
     if(this.props.error[0]){
-    return <Alert bsStyle="danger">
-            <strong>Ah jeez.</strong> {this.props.error[0].response.data}
+    return <Alert bsStyle="danger" style={ font }>
+            <strong>Oh heck no.</strong> {this.props.error[0].response.data}
           </Alert>
+    }
+    else if(this.props.followSuccess){
+      return <Alert bsStyle="success" style={ font }>
+                <strong>Yaaaas.</strong> Summoner followed.
+              </Alert>
     }
   }
 
@@ -49,9 +59,9 @@ class Follow extends Component {
   render(){
     return (
       <div style={{ textAlign: 'center' }}>
-        <h1>Follow</h1>
+        <h1 style={ font }>Follow</h1>
         <form>
-        {this.renderError()}
+        {this.renderAlert()}
         <FieldGroup
           id="formControlsText"
           type="text"
@@ -59,6 +69,7 @@ class Follow extends Component {
           placeholder="Enter summoner"
           value={this.state.summoner}
           onChange={this.onTextEntered}
+          style={ font }
         />
         <ControlLabel>Region</ControlLabel>
         <FormControl 
@@ -67,6 +78,7 @@ class Follow extends Component {
           onChange={this.onSelect.bind(this)}
           inputRef={ el => this.inputEl=el }
           defaultValue="na"
+          style={ font }
         >
             <option value="br">Brazil</option>
             <option value="eune">Europe Nordic & East</option>
@@ -80,15 +92,15 @@ class Follow extends Component {
             <option value="tr">Turkey</option>
             <option value="jp">Japan</option>
         </FormControl>
-        <Button onClick={this.submitButton}>Submit</Button>
+        <Button  style={ font } onClick={this.submitButton}>Submit</Button>
         </form>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({error}) => {
-  return { error };
+const mapStateToProps = ({error, followSuccess}) => {
+  return { error, followSuccess };
 };
 
 export default connect(mapStateToProps, actions)(Follow);

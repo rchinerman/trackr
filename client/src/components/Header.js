@@ -3,15 +3,23 @@ import { connect } from 'react-redux';
 import { Navbar, Nav, NavItem, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
+const HeaderFont = {
+  fontFamily: 'Montserrat, sans-serif'
+};
+
+const font = {
+  fontFamily: 'Open Sans, sans-serif'
+};
+
 class Header extends Component {
   renderLogin(){
     switch (this.props.auth){
       case null:
         return null;
       case false:
-        return <MenuItem href="/auth/google">Login</MenuItem>;        
+        return <MenuItem style={font} href="/auth/google">Login</MenuItem>;        
       default:
-        return <MenuItem href="/api/logout">Logout</MenuItem>;
+        return <MenuItem style={font} href="/api/logout">Logout</MenuItem>;
     }
   }
 
@@ -22,12 +30,15 @@ class Header extends Component {
       case false:
         return;        
       default:
-        return  <Nav>
+        return  <Nav style={font}>
                   <LinkContainer exact to='/dashboard'>
                     <NavItem eventKey={1}>Dashboard</NavItem>          
                   </LinkContainer>
                   <LinkContainer to='/follow'>
                     <NavItem eventKey={2}>Follow</NavItem>          
+                  </LinkContainer>
+                  <LinkContainer to='/about'>
+                    <NavItem eventKey={3}>About</NavItem>          
                   </LinkContainer>
                 </Nav>
     }
@@ -36,10 +47,10 @@ class Header extends Component {
   render() {
     return (
         <Navbar inverse collapseOnSelect>
-        <Navbar.Header>
+        <Navbar.Header style={HeaderFont}>
           <LinkContainer to='/'>
             <Navbar.Brand>
-              Stalkr
+              Trackr
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle />

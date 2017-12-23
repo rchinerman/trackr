@@ -7,6 +7,7 @@ import Landing from './Landing';
 import Header from './Header';
 import FollowingPage from './FollowingPage';
 import Follow from './Follow';
+import About from './About';
 
 class App extends Component {
   componentDidMount(){
@@ -22,6 +23,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/dashboard" component={FollowingPage} />
             <Route exact path="/follow" component={Follow} />
+            <Route exact path="/about" component={About} />
           </div>
         </div>
       </BrowserRouter>

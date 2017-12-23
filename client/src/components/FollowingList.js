@@ -8,6 +8,10 @@ const profileIcon = {
   'margin-right': '.75em'
 };
 
+const font = {
+  fontFamily: 'Open Sans, sans-serif'
+};
+
 const rowElement = {
   'vertical-align': 'middle'
 }
@@ -21,7 +25,7 @@ function TableRow({ rowNumber,
                     flex, 
                     threes }) {
   return (
-    <tr>
+    <tr style={ font }>
       <td>      
         <Image 
           src={`http://opgg-static.akamaized.net/images/profile_icons/profileIcon${icon}.jpg`} 
@@ -65,7 +69,7 @@ class FollowingList extends Component {
   render = () => {
     return (
       <Table responsive>
-      <thead>
+      <thead style={ font }>
         <tr>
           <th></th>
           <th>Summoner Name</th>
