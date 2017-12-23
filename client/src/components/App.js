@@ -8,9 +8,6 @@ import Header from './Header';
 import FollowingPage from './FollowingPage';
 import Follow from './Follow';
 
-const Dashboard = () => <h2>Dashboard</h2>
-const List = () => <h2>List</h2>
-
 class App extends Component {
   componentDidMount(){
     this.props.fetchUser();

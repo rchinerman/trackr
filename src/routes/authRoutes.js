@@ -27,12 +27,12 @@ module.exports = app => {
   });
 
   app.get('/api/follow/:region/:summoner', async (req, res) => {
-    const completion = await riotRequest.followSummoner(req.user, req.params.region, req.params.summoner);
-    if(completion){
+    try{
+      await riotRequest.followSummoner(req.user, req.params.region, req.params.summoner);
       res.send();
-      return;
+    } catch (err) {
+      res.status(500).send(err);
     }
-    res.send();
   });
 
   app.get('/api/profile', async (req, res) => {

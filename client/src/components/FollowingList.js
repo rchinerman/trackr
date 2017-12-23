@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Table, Image } from 'react-bootstrap';
-import FollowedSummoner from './FollowedSummoner';
+import { Table, Image } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 const profileIcon = {

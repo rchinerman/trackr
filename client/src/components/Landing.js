@@ -10,7 +10,7 @@ class Landing extends Component {
         <h1>
           Stalkr
         </h1>
-      </div>
+        </div>
     )
   }
 }

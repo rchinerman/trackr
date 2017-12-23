@@ -44,18 +44,17 @@ const checkFollowing = (userAccount, summoner) =>{
 }
 
 exports.followSummoner = async (user, region, summonerName) => {
-  try {
-    const userAccount = await User.findById(user.id);
-    const summoner = await this.findSummoner(region, summonerName);
-    if(!summoner) return;
-    if(checkFollowing(userAccount, summoner)){
-      return;
-    }
+  const userAccount = await User.findById(user.id);
+  const summoner = await this.findSummoner(region, summonerName);
+  if(!summoner){
+    throw 'Summoner not found.';
+  }
+  else if(checkFollowing(userAccount, summoner)){
+    throw 'Already following user.';
+  }
+  else {
     await userAccount.following.push({region: region, id: summoner.id});
     userAccount.save();
-  } catch (err){
-    console.log(err);
-    return;
   }
 }
 

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 class Header extends Component {
-  renderContent(){
+  renderLogin(){
     switch (this.props.auth){
       case null:
         return null;
@@ -13,9 +12,27 @@ class Header extends Component {
         return <MenuItem href="/auth/google">Login</MenuItem>;        
       default:
         return <MenuItem href="/api/logout">Logout</MenuItem>;
-        
     }
   }
+
+  renderNav(){
+    switch (this.props.auth){
+      case null:
+        return null;
+      case false:
+        return;        
+      default:
+        return  <Nav>
+                  <LinkContainer exact to='/dashboard'>
+                    <NavItem eventKey={1}>Dashboard</NavItem>          
+                  </LinkContainer>
+                  <LinkContainer to='/follow'>
+                    <NavItem eventKey={2}>Follow</NavItem>          
+                  </LinkContainer>
+                </Nav>
+    }
+  }
+
   render() {
     return (
         <Navbar inverse collapseOnSelect>
@@ -28,16 +45,9 @@ class Header extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-          <LinkContainer exact to='/dashboard'>
-            <NavItem eventKey={1}>Dashboard</NavItem>          
-          </LinkContainer>
-          <LinkContainer to='/follow'>
-            <NavItem eventKey={2}>Follow</NavItem>          
-          </LinkContainer>
-          </Nav>
+          {this.renderNav()}
           <Nav pullRight>
-            {this.renderContent()}
+            {this.renderLogin()}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

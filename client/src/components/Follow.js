@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 function FieldGroup({ id, label, help, ...props }) {
   return (
@@ -27,21 +28,30 @@ class Follow extends Component {
 
   onTextEntered = async (e) => {
     await this.setState({ summoner: e.target.value });   
-    console.log(this.state.summoner); 
   }
 
-  submitFollow = async () => {
-    const res = await axios.get(`/api/follow/${this.state.region}/${this.state.summoner}`); 
-    console.log(res);   
+  submitButton = () => {
+    this.props.submitFollow(this.state.region, this.state.summoner);
+  }
+
+  renderError = () => {
+    if(this.props.error[0]){
+    return <Alert bsStyle="danger">
+            <strong>Ah jeez.</strong> {this.props.error[0].response.data}
+          </Alert>
+    }
+  }
+
+  componentWillUnmount = () => {
+    this.props.pageLeave();
   }
 
   render(){
     return (
       <div style={{ textAlign: 'center' }}>
-        <h1>
-          Follow
-        </h1>
+        <h1>Follow</h1>
         <form>
+        {this.renderError()}
         <FieldGroup
           id="formControlsText"
           type="text"
@@ -56,6 +66,7 @@ class Follow extends Component {
           placeholder="select"
           onChange={this.onSelect.bind(this)}
           inputRef={ el => this.inputEl=el }
+          defaultValue="na"
         >
             <option value="br">Brazil</option>
             <option value="eune">Europe Nordic & East</option>
@@ -63,17 +74,21 @@ class Follow extends Component {
             <option value="kr">Korea</option>
             <option value="lan">Latin America North</option>
             <option value="las">Latin America South</option>
-            <option selected value="na">North America</option>
+            <option value="na">North America</option>
             <option value="oce">Oceania</option>
             <option value="ru">Russia</option>
             <option value="tr">Turkey</option>
             <option value="jp">Japan</option>
         </FormControl>
-        <Button onClick={this.submitFollow}>Submit</Button>
+        <Button onClick={this.submitButton}>Submit</Button>
         </form>
       </div>
     )
   }
 }
 
-export default Follow;
+const mapStateToProps = ({error}) => {
+  return { error };
+};
+
+export default connect(mapStateToProps, actions)(Follow);
