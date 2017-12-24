@@ -58,7 +58,7 @@ class Header extends Component {
         <Navbar inverse collapseOnSelect style={nav}>
         <Navbar.Header style={HeaderFont}>
             <Navbar.Brand>
-              <LinkContainer to='/home'>
+              <LinkContainer to='/'>
                 <Image src="https://i.imgur.com/L4rJNjS.png" />
               </LinkContainer>
             </Navbar.Brand>

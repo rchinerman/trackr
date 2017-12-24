@@ -5,19 +5,9 @@ import * as actions from '../actions';
 
 import Landing from './Landing';
 import Header from './Header';
-import HomeHeader from './HomeHeader';
 import FollowingPage from './FollowingPage';
 import Follow from './Follow';
 import About from './About';
-
-const DetermineHeader = ({ match }) => {
-  if(match.params.id !== 'home'){
-    return <Header />
-  }
-  else{
-    return <HomeHeader />
-  }
-}
 
 class App extends Component {
   componentDidMount(){
@@ -28,9 +18,9 @@ class App extends Component {
     return(
       <BrowserRouter>
         <div>
-        <Route path="/:id" component={DetermineHeader}/>
+        <Header />
         <div className="container">
-            <Route exact path="/home" component={Landing} />
+            <Route exact path="/" component={Landing} />
             <Route exact path="/dashboard" component={FollowingPage} />
             <Route exact path="/follow" component={Follow} />
             <Route exact path="/about" component={About} />
