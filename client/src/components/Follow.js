@@ -77,7 +77,7 @@ class Follow extends Component {
           placeholder="select"
           onChange={this.onSelect.bind(this)}
           inputRef={ el => this.inputEl=el }
-          defaultValue="na"
+          defaultValue={this.state.region}
           style={ font }
         >
             <option value="br">Brazil</option>

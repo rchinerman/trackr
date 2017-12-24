@@ -1,0 +1,19 @@
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
+  background-color: transparent;
+  color: white;
+}
+.home-header-nav {
+  background-color: transparent;
+  border: none;
+}
+.navbar-inverse .navbar-nav > li > a {
+  color: white;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  line-height: 30px;
+}
+.navbar-inverse .navbar-brand {
+  color: white;
+  height: 60px;
+}
