@@ -5,8 +5,8 @@ import * as actions from '../actions';
 import FollowingList from './FollowingList';
 
 class Landing extends Component {
-  componentDidMount(){
-    this.props.fetchFollowingList();
+  componentDidMount = async () => {
+    await this.props.fetchFollowingList();
   }
   render(){
     return (
