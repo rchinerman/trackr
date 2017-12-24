@@ -9,11 +9,18 @@ const profileIcon = {
 };
 
 const font = {
-  fontFamily: 'Open Sans, sans-serif'
+  fontFamily: 'Montserrat, sans-serif',
+  'opacity':'0.87'    
 };
 
 const rowElement = {
-  'vertical-align': 'middle'
+  'vertical-align': 'middle',
+  'opacity':'0.87'  
+}
+
+const unranked = {
+  'vertical-align': 'middle',  
+  'opacity':'0.37'
 }
 
 function TableRow({ rowNumber, 
@@ -36,9 +43,9 @@ function TableRow({ rowNumber,
       </td>
       <td style={rowElement}>{summonerName}</td>
       <td style={rowElement}>{region}</td>
-      <td style={rowElement}>{solo}</td>
-      <td style={rowElement}>{flex}</td>
-      <td style={rowElement}>{threes}</td>
+      <td style={solo==="UNRANKED" ? unranked : rowElement}>{solo}</td>
+      <td style={flex==="UNRANKED" ? unranked : rowElement}>{flex}</td>
+      <td style={threes==="UNRANKED" ? unranked : rowElement}>{threes}</td>
     </tr>
   );
 }
