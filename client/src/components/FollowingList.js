@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 const profileIcon = {
   display: 'inline',
-  'max-width': '30px',
-  'margin-right': '.75em'
+  'maxWidth': '30px',
+  'marginRight': '.75em'
 };
 
 const font = {
@@ -14,12 +14,12 @@ const font = {
 };
 
 const rowElement = {
-  'vertical-align': 'middle',
+  'verticalAlign': 'middle',
   'opacity':'0.87'  
 }
 
 const unranked = {
-  'vertical-align': 'middle',  
+  'verticalAlign': 'middle',  
   'opacity':'0.37'
 }
 
@@ -35,7 +35,7 @@ function TableRow({ rowNumber,
     <tr style={ font }>
       <td>      
         <Image 
-          src={`http://opgg-static.akamaized.net/images/profile_icons/profileIcon${icon}.jpg`} 
+          src={`http://ddragon.leagueoflegends.com/cdn/7.24.1/img/profileicon/${icon}.png`} 
           responsive 
           rounded 
           style={profileIcon}

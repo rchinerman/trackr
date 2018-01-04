@@ -59,15 +59,14 @@ exports.followSummoner = async (user, region, summonerName) => {
 }
 
 exports.processList = async (user) => {
-  const userAccount = await User.findById(user.id);    
+  const userAccount = await User.findById(user.id).lean();    
   const followingList = userAccount.following;  
   const currentDate = new Date();
   let followingRanks = await Promise.all(followingList.map(async (summoner) => {
-    const storedSummoner = await Summoner.findOne({ summonerId: summoner.id });    
+    const storedSummoner = await Summoner.findOne({ summonerId: summoner.id }).lean();    
     const lastUpdate = new Date(storedSummoner.lastUpdate);
     if(calcTimeDifference(lastUpdate, currentDate) >= 1){
-      await findRank(summoner.region, summoner.id);      
-      const updatedSummoner = await Summoner.findOne({ summonerId: summoner.id });
+      const updatedSummoner = await findRank(summoner.region, summoner.id);    
       return {
         summoner: updatedSummoner.summonerName,
         region: summoner.region,
@@ -89,8 +88,8 @@ exports.processList = async (user) => {
   return followingRanks;
 }
 
-const checkExisting = async (summoner) => {
-  const existingUser = await Summoner.findOne({ summonerNameLower: summoner.toLowerCase() });
+const checkExisting = async (summonerId) => {
+  const existingUser = await Summoner.findOne({ summonerId: summonerId }).lean();
   if (existingUser){
     return existingUser; 
   }
@@ -100,10 +99,9 @@ const checkExisting = async (summoner) => {
 exports.findSummoner = async (region, summonerName) => {
   try {
     const summoner = await kayn.Summoner.by.name(summonerName).region(region);
-    if(!await checkExisting(summonerName)){    
+    if(!await checkExisting(summoner.id)){    
       await new Summoner({
         summonerName: summoner.name,
-        summonerNameLower: summoner.name.toLowerCase(),
         summonerId: summoner.id,
         profileIcon: summoner.profileIconId,
         lastUpdate: new Date()
@@ -112,7 +110,6 @@ exports.findSummoner = async (region, summonerName) => {
     }
     return summoner;  
   } catch(err) {
-    console.log(err);
     return false;
   }
 };
@@ -140,4 +137,5 @@ const findRank = async (region, id) => {
   })
   storedSummoner.lastUpdate = currentDate;
   storedSummoner.save();  
+  return storedSummoner;
 }
