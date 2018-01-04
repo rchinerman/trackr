@@ -37,7 +37,11 @@ class Header extends Component {
       case null:
         return null;
       case false:
-        return;        
+        return  <Nav style={font}>
+                  <LinkContainer to='/about'>
+                    <NavItem eventKey={3}>About</NavItem>          
+                  </LinkContainer> 
+                </Nav>    
       default:
         return  <Nav style={font}>
                   <LinkContainer exact to='/dashboard'>
