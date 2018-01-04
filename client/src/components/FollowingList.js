@@ -79,7 +79,7 @@ class FollowingList extends Component {
   render = () => {
     if(this.props.following === null){
       return (
-        <div className='text-center'>
+        <div className='text-center follow-loading'>
           <Spinner color='#B993D6'/>
         </div>
       )

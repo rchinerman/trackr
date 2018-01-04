@@ -31,8 +31,8 @@ class Landing extends Component {
           <p style={ UnderFont }>
             follow your friends
           </p>
+          <Image responsive src="https://i.imgur.com/LIlmUt1.png" style={{'max-height': '35em', 'display': 'inline-block'}}/>
         </div>
-        <Image responsive src="https://i.imgur.com/LIlmUt1.png" style={{'max-height': '35em'}}/>
       </div>
     )
   }

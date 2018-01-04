@@ -38,3 +38,6 @@
 .follow-button:hover::after {
   opacity: 1;
 }
+.follow-loading {
+  margin-top: 10em;
+}
