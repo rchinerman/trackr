@@ -62,7 +62,7 @@ exports.processList = async (user) => {
   const userAccount = await User.findById(user.id).lean();    
   const followingList = userAccount.following;  
   const currentDate = new Date();
-  let followingRanks = await Promise.all(followingList.map(async (summoner) => {
+  let followingRanks = followingList.map(async summoner => {
     const storedSummoner = await Summoner.findOne({ summonerId: summoner.id }).lean();    
     const lastUpdate = new Date(storedSummoner.lastUpdate);
     if(calcTimeDifference(lastUpdate, currentDate) >= 1){
@@ -84,8 +84,8 @@ exports.processList = async (user) => {
       solo: storedSummoner.soloHistory[storedSummoner.soloHistory.length - 1],
       flex: storedSummoner.flexHistory[storedSummoner.flexHistory.length - 1],
       threes: storedSummoner.threesHistory[storedSummoner.threesHistory.length - 1]};
-  }));
-  return followingRanks;
+  });
+  return (await Promise.all(followingRanks));
 }
 
 const checkExisting = async (summonerId) => {

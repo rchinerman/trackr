@@ -5,6 +5,7 @@
 .navbar-inverse .navbar-nav>.active>a:hover{
   background-color: transparent;
   color: @white-text;
+  border: none;
 }
 
 .home-header-nav {
@@ -12,10 +13,13 @@
   border: none;
 }
 
-.navbar-inverse .navbar-nav>li>a {
+.navbar-inverse .navbar-nav>li>a,
+.navbar-inverse .navbar-nav>li>a:focus, 
+.navbar-inverse .navbar-nav>li>a:hover {
   color: @white-text;
   font-family: "Open Sans",Helvetica,Arial,sans-serif;
   line-height: 30px;    
+  border: none;
 }
 
 .navbar-inverse .navbar-brand{

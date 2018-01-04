@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Image } from 'react-bootstrap';
+import { Table, Image, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Spinner from 'react-spinkit';
+import '../styles/FollowingList.css';
 
 const profileIcon = {
   display: 'inline',
@@ -74,23 +77,42 @@ class FollowingList extends Component {
   }
 
   render = () => {
-    return (
-      <Table responsive>
-      <thead style={ font }>
-        <tr>
-          <th></th>
-          <th>Summoner Name</th>
-          <th>Region</th>
-          <th>Solo</th>
-          <th>Flex</th>
-          <th>Threes</th>
-        </tr>
-      </thead>
-      <tbody>
-        {this.renderContent()}
-      </tbody>
-      </Table>
-    );
+    if(this.props.following === null){
+      return (
+        <div className='text-center'>
+          <Spinner color='#B993D6'/>
+        </div>
+      )
+    } 
+    else if(this.props.following.length === 0){
+      return (
+        <div className='text-center'>
+          <div style={ font }>You're not following anyone!</div>
+          <Link to="/follow">
+            <Button className="follow-button">Follow</Button>
+          </Link>
+        </div>
+      )
+    } 
+    else {
+      return (
+        <Table responsive>
+          <thead style={ font }>
+            <tr>
+              <th></th>
+              <th>Summoner Name</th>
+              <th>Region</th>
+              <th>Solo</th>
+              <th>Flex</th>
+              <th>Threes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderContent()}
+          </tbody>
+        </Table>
+      );
+    }
   };
 };
 

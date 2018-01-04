@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Alert } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Button, Alert, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import '../styles/Follow.css';
 
 const font = {
-  fontFamily: 'Open Sans, sans-serif'
+  fontFamily: 'Montserrat, sans-serif'
 };
 
 function FieldGroup({ id, label, help, ...props }) {
@@ -41,9 +42,10 @@ class Follow extends Component {
 
   renderAlert = () => {
     if(this.props.error[0]){
-    return <Alert bsStyle="danger" style={ font }>
-            <strong>Oh heck no.</strong> {this.props.error[0].response.data}
-          </Alert>
+      console.log(this.props.error[0])
+      return <Alert bsStyle="danger" style={ font }>
+              <strong>Oh heck no.</strong> {this.props.error[0].response.data}
+            </Alert>
     }
     else if(this.props.followSuccess){
       return <Alert bsStyle="success" style={ font }>
@@ -58,8 +60,7 @@ class Follow extends Component {
 
   render(){
     return (
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={ font }>Follow</h1>
+      <Col xs={10} xsOffset={1} md={4} mdOffset={4}>
         <form>
         {this.renderAlert()}
         <FieldGroup
@@ -92,9 +93,11 @@ class Follow extends Component {
             <option value="tr">Turkey</option>
             <option value="jp">Japan</option>
         </FormControl>
-        <Button  style={ font } onClick={this.submitButton}>Submit</Button>
+        <div class="text-center">
+          <Button  style={ font } className="follow-submit-button" onClick={this.submitButton}>Follow</Button>
+        </div>
         </form>
-      </div>
+      </Col>
     )
   }
 }

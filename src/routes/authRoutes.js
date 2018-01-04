@@ -35,6 +35,10 @@ module.exports = app => {
     }
   });
 
+  app.get('/api/follow/:region/', async (req, res) => {
+    res.status(500).send('Please enter a summoner name.');
+  });
+
   app.get('/api/profile', async (req, res) => {
     const following = await riotRequest.processList(req.user);
     res.send(following);

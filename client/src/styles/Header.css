@@ -3,15 +3,19 @@
 .navbar-inverse .navbar-nav > .active > a:hover {
   background-color: transparent;
   color: white;
+  border: none;
 }
 .home-header-nav {
   background-color: transparent;
   border: none;
 }
-.navbar-inverse .navbar-nav > li > a {
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > li > a:hover {
   color: white;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   line-height: 30px;
+  border: none;
 }
 .navbar-inverse .navbar-brand {
   color: white;

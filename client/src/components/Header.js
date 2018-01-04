@@ -9,7 +9,7 @@ const HeaderFont = {
 };
 
 const font = {
-  fontFamily: 'Open Sans, sans-serif'
+  fontFamily: 'Open Sans, sans-serif',
 };
 
 const nav = {
