@@ -64,10 +64,9 @@ class Follow extends Component {
         <form>
         {this.renderAlert()}
         <FieldGroup
-          id="formControlsText"
           type="text"
           label="Summoner"
-          placeholder="Enter summoner"
+          placeholder="Enter a summoner name"
           value={this.state.summoner}
           onChange={this.onTextEntered}
           style={ font }
@@ -81,17 +80,17 @@ class Follow extends Component {
           defaultValue={this.state.region}
           style={ font }
         >
-            <option value="br">Brazil</option>
-            <option value="eune">Europe Nordic & East</option>
-            <option value="euw">Europe West</option>
-            <option value="kr">Korea</option>
-            <option value="lan">Latin America North</option>
-            <option value="las">Latin America South</option>
-            <option value="na">North America</option>
-            <option value="oce">Oceania</option>
-            <option value="ru">Russia</option>
-            <option value="tr">Turkey</option>
-            <option value="jp">Japan</option>
+          <option value="br">Brazil</option>
+          <option value="eune">Europe Nordic & East</option>
+          <option value="euw">Europe West</option>
+          <option value="kr">Korea</option>
+          <option value="lan">Latin America North</option>
+          <option value="las">Latin America South</option>
+          <option value="na">North America</option>
+          <option value="oce">Oceania</option>
+          <option value="ru">Russia</option>
+          <option value="tr">Turkey</option>
+          <option value="jp">Japan</option>
         </FormControl>
         <div class="text-center">
           <Button  style={ font } className="follow-submit-button" onClick={this.submitButton}>Follow</Button>

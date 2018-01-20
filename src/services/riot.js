@@ -21,7 +21,7 @@ const kayn = Kayn(config.riotAPI)({
     shouldRetry: true,
     numberOfRetriesBeforeAbort: 3,
     delayBeforeRetry: 1000,
-    burst: false,
+    burst: true,
   },
   cacheOptions: {
     cache: null,
@@ -37,9 +37,10 @@ const calcTimeDifference = (date1, date2) => {
   return Math.round(difference/day);
 }
 
-const checkFollowing = (userAccount, summoner) =>{
-  return(userAccount.following.some(follow => {
-    return follow.id === summoner.id;
+const checkIfFollowing = (userAccount, requestedSummoner) =>{
+  return(userAccount.following.some(followedSummoner => {
+    // break if this returns true, indicating the requested summoner is already followed
+    return followedSummoner.id === requestedSummoner.id;
   }));
 }
 
@@ -49,7 +50,7 @@ exports.followSummoner = async (user, region, summonerName) => {
   if(!summoner){
     throw 'Summoner not found.';
   }
-  else if(checkFollowing(userAccount, summoner)){
+  else if(checkIfFollowing(userAccount, summoner)){
     throw 'Already following user.';
   }
   else {
@@ -60,53 +61,50 @@ exports.followSummoner = async (user, region, summonerName) => {
 
 exports.processList = async (user) => {
   const userAccount = await User.findById(user.id).lean();    
-  const followingList = userAccount.following;  
+  const followedSummoners = userAccount.following;  
   const currentDate = new Date();
-  let followingRanks = followingList.map(async summoner => {
+  let ranksOfFollowedSummoners = followedSummoners.map(async summoner => {
     const storedSummoner = await Summoner.findOne({ summonerId: summoner.id }).lean();    
     const lastUpdate = new Date(storedSummoner.lastUpdate);
     if(calcTimeDifference(lastUpdate, currentDate) >= 1){
-      const updatedSummoner = await findRank(summoner.region, summoner.id);    
-      return {
-        summoner: updatedSummoner.summonerName,
-        region: summoner.region,
-        icon: updatedSummoner.profileIcon,
-        lastUpdate: updatedSummoner.lastUpdate,
-        solo: updatedSummoner.soloHistory[updatedSummoner.soloHistory.length - 1],
-        flex: updatedSummoner.flexHistory[updatedSummoner.flexHistory.length - 1],
-        threes: updatedSummoner.threesHistory[updatedSummoner.threesHistory.length - 1]};
-    };
-    return {
-      summoner: storedSummoner.summonerName,
-      region: summoner.region,
-      icon: storedSummoner.profileIcon,
-      lastUpdate: storedSummoner.lastUpdate,
-      solo: storedSummoner.soloHistory[storedSummoner.soloHistory.length - 1],
-      flex: storedSummoner.flexHistory[storedSummoner.flexHistory.length - 1],
-      threes: storedSummoner.threesHistory[storedSummoner.threesHistory.length - 1]};
+      const updatedSummoner = await findSummonerRank(summoner.region, summoner.id);
+      return formatSummonerInformation(updatedSummoner, summoner.region);  
+    }
+    return formatSummonerInformation (storedSummoner, summoner.region);
   });
-  return (await Promise.all(followingRanks));
+  return (await Promise.all(ranksOfFollowedSummoners));
 }
 
-const checkExisting = async (summonerId) => {
+const formatSummonerInformation = (summoner, region) => {
+  return {
+    summoner: summoner.summonerName,
+    region: region,
+    icon: summoner.profileIcon,
+    lastUpdate: summoner.lastUpdate,
+    solo: summoner.soloHistory[summoner.soloHistory.length - 1],
+    flex: summoner.flexHistory[summoner.flexHistory.length - 1],
+    threes: summoner.threesHistory[summoner.threesHistory.length - 1]
+  };
+}
+
+const checkIfUserExists = async (summonerId) => {
   const existingUser = await Summoner.findOne({ summonerId: summonerId }).lean();
-  if (existingUser){
-    return existingUser; 
-  }
-  return false;
+  if (existingUser) return existingUser;
+  return false; // user does not exist
 }
 
 exports.findSummoner = async (region, summonerName) => {
   try {
     const summoner = await kayn.Summoner.by.name(summonerName).region(region);
-    if(!await checkExisting(summoner.id)){    
+    if(!await checkIfUserExists(summoner.id)){  
+      // if user doesn't exist, create information for them  
       await new Summoner({
-        summonerName: summoner.name,
-        summonerId: summoner.id,
-        profileIcon: summoner.profileIconId,
-        lastUpdate: new Date()
-      }).save();   
-      await findRank(region, summoner.id);            
+                  summonerName: summoner.name,
+                  summonerId: summoner.id,
+                  profileIcon: summoner.profileIconId,
+                  lastUpdate: new Date()
+                }).save();   
+      await findSummonerRank(region, summoner.id);            
     }
     return summoner;  
   } catch(err) {
@@ -114,11 +112,11 @@ exports.findSummoner = async (region, summonerName) => {
   }
 };
 
-const findRank = async (region, id) => {
+const findSummonerRank = async (region, id) => {
   const storedSummoner = await Summoner.findOne({ summonerId: id }); 
-  const ranks = await kayn.LeaguePositions.by.summonerID(id).region(region);
+  const summonerRanks = await kayn.LeaguePositions.by.summonerID(id).region(region);
   const currentDate = new Date();
-  ranks.forEach((queue) => {
+  summonerRanks.forEach((queue) => {
     let queueInfo = {
       date: currentDate,
       rank: queue
